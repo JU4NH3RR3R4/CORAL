@@ -36,7 +36,8 @@ Notas:      {d.get('notas') or 'Sin notas'}
     msg.attach(MIMEText(cuerpo, "plain"))
 
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
             server.login(GMAIL_USER, GMAIL_PASS)
             server.sendmail(GMAIL_USER, CORREO_DESTINO, msg.as_string())
         return jsonify({"ok": True})
