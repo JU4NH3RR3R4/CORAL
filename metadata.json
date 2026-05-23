@@ -1,0 +1,6 @@
+{
+  "name": "Coral",
+  "description": "Espacio de bienestar y psicología humanista dedicada a tu salud mental con un enfoque cálido, profesional y humano.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
