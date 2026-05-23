@@ -7,8 +7,9 @@ from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 CORS(app)
 
-GMAIL_USER = "Clinicapsicologicacoral@gmail.com"       # tu correo
-GMAIL_PASS = "eenm obdg rpjx ycdt"      # contraseña de aplicación de Gmail
+import os
+GMAIL_USER = os.environ.get("Clinicapsicologicacoral@gmail.com")
+GMAIL_PASS = os.environ.get("eenm obdg rpjx ycdt")
 
 @app.route("/enviar-cita", methods=["POST"])
 def enviar_cita():

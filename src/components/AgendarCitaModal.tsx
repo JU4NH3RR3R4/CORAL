@@ -95,7 +95,7 @@ export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: 
 
 const handleConfirmReservation = async () => {
     try {
-      await fetch("http://127.0.0.1:5000/enviar-cita", {
+      await fetch("https://coral-7rhb.onrender.com/enviar-cita", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
