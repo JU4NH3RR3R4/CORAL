@@ -151,7 +151,7 @@ export const THERAPISTS_DATA: Therapist[] = [
     name: "Sofia Peña",
     role: "Directora Clínica y Psicóloga Senior",
     bio: "Especialista en Terapia Cognitivo-Conductual con más de 12 años acompañando procesos de ansiedad y depresión.",
-    detailedBio: "Sofia Peña" es cofundadora de Coral Centro de Psicología. Cuenta con una Maestría en Psicología Clínica y de la Salud por la Universidad Nacional, certificada en Terapias de Tercera Generación. Su enfoque se centra en proporcionar soluciones estructuradas y basadas en evidencia científica para que los pacientes retomen el control sobre sus pensamientos y emociones de manera autónoma y compasiva.",
+    detailedBio: "Sofia Peña es cofundadora de Coral Centro de Psicología. Cuenta con una Maestría en Psicología Clínica y de la Salud por la Universidad Nacional, certificada en Terapias de Tercera Generación. Su enfoque se centra en proporcionar soluciones estructuradas y basadas en evidencia científica para que los pacientes retomen el control sobre sus pensamientos y emociones de manera autónoma y compasiva.",
     imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuC-8ACve0Wv7tJTRzMLx8o36bV00GSBKZH8m00OrsLaQDW5izYjFQyNPzPTJRdjFuawX4xcjCZt7ZysXUgWTIB8PzluflvO3RiUaZwtTI6oTZ4AQw8vqN8ieHj0DtIx_916COOVAofGQOiLMqZanlVfOc3X5o4KPlcM7NdmNR6srrS0jcJyJswK6WaGFAC2dFg4eI0z0IZcimOfi8YSx7JShj-h_uXQHDUQqL6sT3lsauFUX2SEjjDsKqtsykbF8oNLKKEUNlDuNbk",
     specialties: ["Terapia Cognitivo-Conductual", "Ansiedad y Estrés", "Depresión Mayor", "Mindfulness"],
     email: "Sofia.peña@coral.com",
