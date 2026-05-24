@@ -1,27 +1,39 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-import smtplib
+import base64
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
 
 app = Flask(__name__)
 CORS(app)
 
 GMAIL_USER = os.environ.get("GMAIL_USER")
-GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
+CLIENT_ID = os.environ.get("GMAIL_CLIENT_ID")
+CLIENT_SECRET = os.environ.get("GMAIL_CLIENT_SECRET")
+REFRESH_TOKEN = os.environ.get("GMAIL_REFRESH_TOKEN")
 CORREO_CLINICA = os.environ.get("CORREO_CLINICA")
 
-def enviar_correo(destinatario, asunto, cuerpo):
-    msg = MIMEMultipart()
-    msg["From"] = GMAIL_USER
-    msg["To"] = destinatario
-    msg["Subject"] = asunto
-    msg.attach(MIMEText(cuerpo, "plain"))
+def get_gmail_service():
+    creds = Credentials(
+        token=None,
+        refresh_token=REFRESH_TOKEN,
+        token_uri="https://oauth2.googleapis.com/token",
+        client_id=CLIENT_ID,
+        client_secret=CLIENT_SECRET,
+        scopes=["https://www.googleapis.com/auth/gmail.send"]
+    )
+    return build("gmail", "v1", credentials=creds)
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
-        server.sendmail(GMAIL_USER, destinatario, msg.as_string())
+def enviar_correo(destinatario, asunto, cuerpo):
+    service = get_gmail_service()
+    msg = MIMEText(cuerpo)
+    msg["to"] = destinatario
+    msg["from"] = GMAIL_USER
+    msg["subject"] = asunto
+    raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+    service.users().messages().send(userId="me", body={"raw": raw}).execute()
 
 @app.route("/enviar-cita", methods=["POST"])
 def enviar_cita():
@@ -40,18 +52,11 @@ Hora:       {d.get('hora')}
 Notas:      {d.get('notas') or 'Sin notas'}
     """
 
-    enviar_correo(
-        d.get('email'),
-        f"Confirmación de cita - {d.get('fecha')}",
-        cuerpo
-    )
-    enviar_correo(
-        CORREO_CLINICA,
-        f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}",
-        cuerpo
-    )
+    enviar_correo(d.get('email'), f"Confirmación de cita - {d.get('fecha')}", cuerpo)
+    enviar_correo(CORREO_CLINICA, f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}", cuerpo)
 
     return jsonify({"ok": True})
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
