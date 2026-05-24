@@ -1,15 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import os
+import resend
 
 app = Flask(__name__)
 CORS(app)
 
-import os
-GMAIL_USER = os.environ.get("Clinicapsicologicacoral@gmail.com")
-GMAIL_PASS = os.environ.get("eenm obdg rpjx ycdt")
+resend.api_key = os.environ.get("RESEND_API_KEY")
 
 @app.route("/enviar-cita", methods=["POST"])
 def enviar_cita():
@@ -29,17 +26,13 @@ Hora:       {d.get('hora')}
 Notas:      {d.get('notas') or 'Sin notas'}
     """
 
-    msg = MIMEMultipart()
-    msg["Subject"] = f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}"
-    msg["From"]    = GMAIL_USER
-    msg["To"]      = CORREO_DESTINO
-    msg.attach(MIMEText(cuerpo, "plain"))
-
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()
-            server.login(GMAIL_USER, GMAIL_PASS)
-            server.sendmail(GMAIL_USER, CORREO_DESTINO, msg.as_string())
+        resend.Emails.send({
+            "from": "onboarding@resend.dev",
+            "to": CORREO_DESTINO,
+            "subject": f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}",
+            "text": cuerpo
+        })
         return jsonify({"ok": True})
     except Exception as e:
         import traceback
