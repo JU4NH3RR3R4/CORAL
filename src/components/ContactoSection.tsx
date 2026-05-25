@@ -72,7 +72,7 @@ export default function ContactoSection() {
 
         {/* Website link card */}
         <a
-          href="coral-ten-plum.vercel.app"
+         href="https://coral-ten-plum.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
