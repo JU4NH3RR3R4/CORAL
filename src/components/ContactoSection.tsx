@@ -52,7 +52,7 @@ export default function ContactoSection() {
           </div>
           <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Teléfono</span>
           <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
-            +52 55 1234 5678
+             +57 323 9233344
           </span>
         </a>
 
