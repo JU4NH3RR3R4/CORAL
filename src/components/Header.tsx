@@ -59,17 +59,22 @@ export default function Header({ currentTab, setCurrentTab, onOpenBooking, isDar
 
         {/* Book Appointment CTA Button & Mobile Toggle */}
         <div className="flex items-center gap-4">
-         <button
+        <button
   onClick={onToggleDark}
   className="text-coral-text-variant hover:text-coral-dark transition-colors p-1.5 cursor-pointer"
   aria-label="Toggle dark mode"
 >
   {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
 </button>
-            <Calendar className="w-4 h-4" />
-            <span className="hidden sm:inline">Agendar cita</span>
-            <span className="sm:hidden">Agendar</span>
-          </button>
+<button
+  onClick={onOpenBooking}
+  className="bg-coral-light hover:bg-coral-dark text-coral-lowest font-medium text-sm px-6 py-2.5 rounded-full shadow-sm hover:shadow-md hover:-translate-y-[1px] active:scale-95 duration-150 transition-all flex items-center gap-2 cursor-pointer"
+  id="book-appointment-btn"
+>
+  <Calendar className="w-4 h-4" />
+  <span className="hidden sm:inline">Agendar cita</span>
+  <span className="sm:hidden">Agendar</span>
+</button>
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
