@@ -175,15 +175,15 @@ export default function NosotrosSection({ onSelectTherapist }: NosotrosSectionPr
       <section className="flex flex-col sm:flex-row justify-center items-center gap-8 py-8 border-y border-coral-outline-variant/20 pt-12">
         <div className="flex items-center gap-3 text-coral-text-variant shrink-0">
           <Phone className="w-5 h-5 text-coral-light" />
-          <span className="font-sans text-sm font-semibold">+52 (55) 1234 5678</span>
+          <span className="font-sans text-sm font-semibold">+57 3239233344</span>
         </div>
         <div className="flex items-center gap-3 text-coral-text-variant shrink-0">
           <Mail className="w-5 h-5 text-coral-light" />
-          <span className="font-sans text-sm font-semibold">contacto@coral.com</span>
+          <span className="font-sans text-sm font-semibold">clinicapsicologicacoral@gmail.com</span>
         </div>
         <div className="flex items-center gap-3 text-coral-text-variant shrink-0">
           <MapPin className="w-5 h-5 text-coral-light" />
-          <span className="font-sans text-sm font-semibold">Ciudad de México, MX</span>
+          <span className="font-sans text-sm font-semibold">Barranquilla</span>
         </div>
       </section>
 
