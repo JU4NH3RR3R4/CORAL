@@ -70,7 +70,7 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
             <li><a href="#aviso-privacidad" className={`${textHover} transition-all hover:underline block cursor-pointer`}>Aviso de Privacidad</a></li>
             <li><a href="#terminos" className={`${textHover} transition-all hover:underline block cursor-pointer`}>Términos y Condiciones</a></li>
             <li><a href="#cookies" className={`${textHover} transition-all hover:underline block cursor-pointer`}>Política de Cookies</a></li>
-            <li className="pt-2 text-xs opacity-70">Dirección: Av. Bienestar 123, Piso 4, CDMX.</li>
+            <li className="pt-2 text-xs opacity-70">Dirección: Barranquilla. COL</li>
           </ul>
         </div>
       </div>
