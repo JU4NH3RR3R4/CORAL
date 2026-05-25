@@ -237,7 +237,7 @@ export default function ContactoSection() {
               Recibe atención personalizada inmediata. Coordina agendas, consulta dudas generales o coordina citas directas por mensajería.
             </p>
             <a
-              href="https://wa.me/525512345678"
+              href="https://wa.me/+573239233344"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer text-sm"
