@@ -52,6 +52,21 @@ export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: 
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [datesList] = useState(generateDates);
+  const [citasOcupadas, setCitasOcupadas] = useState<{fecha: string, hora: string, terapeuta: string}[]>([]);
+
+useEffect(() => {
+  fetch("https://coral-7rhb.onrender.com/citas-ocupadas")
+    .then(r => r.json())
+    .then(data => setCitasOcupadas(data))
+    .catch(() => {});
+}, []);
+
+const isSlotOcupado = (fecha: string, hora: string) => {
+  return citasOcupadas.some(c => 
+    c.fecha === fecha && c.hora === hora &&
+    (selectedTherapistId === "" || c.terapeuta === currentTherapist?.name || c.terapeuta === "Cualquier especialista")
+  );
+};
 
   // Set the pre-selected service if provided
   useEffect(() => {
@@ -385,21 +400,25 @@ const handleConfirmReservation = async () => {
                       ) : (
                         <div className="grid grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-1">
                           {TIME_SLOTS.map((time) => {
-                            const isSelect = selectedTimeSlot === time;
-                            return (
-                              <button
-                                key={time}
-                                onClick={() => setSelectedTimeSlot(time)}
-                                className={`py-2.5 rounded-xl border text-center font-bold text-sm cursor-pointer transition-all duration-150 ${
-                                  isSelect
-                                    ? "bg-coral-dark border-coral-dark text-white shadow-xs"
-                                    : "bg-coral-lowest hover:border-coral-outline border-coral-outline-variant/20 hover:bg-coral-low/40"
-                                }`}
-                              >
-                                {time}
-                              </button>
-                            );
-                          })}
+  const isSelect = selectedTimeSlot === time;
+  const ocupado = isSlotOcupado(selectedDate, time);
+  return (
+    <button
+      key={time}
+      onClick={() => !ocupado && setSelectedTimeSlot(time)}
+      disabled={ocupado}
+      className={`py-2.5 rounded-xl border text-center font-bold text-sm transition-all duration-150 ${
+        ocupado
+          ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed line-through"
+          : isSelect
+          ? "bg-coral-dark border-coral-dark text-white shadow-xs cursor-pointer"
+          : "bg-coral-lowest hover:border-coral-outline border-coral-outline-variant/20 hover:bg-coral-low/40 cursor-pointer"
+      }`}
+    >
+      {time}
+    </button>
+  );
+})}
                         </div>
                       )}
                     </div>
