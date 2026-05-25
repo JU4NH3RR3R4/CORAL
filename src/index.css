@@ -42,7 +42,7 @@
 }
 /* Dark mode */
 @layer base {
-  .dark body {
+  .dark {
     --color-coral-bg: #0f1a24;
     --color-coral-low: #1a2535;
     --color-coral-lowest: #162030;
