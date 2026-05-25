@@ -52,7 +52,7 @@ export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: 
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [datesList] = useState(generateDates);
-  const [citasOcupadas, setCitasOcupadas] = useState<{fecha: string, hora: string, terapeuta: string}[]>([]);
+  const [citasOcupadas, setCitasOcupadas] = useState<{fechaISO: string, hora: string}[]>([]);
 
 useEffect(() => {
   fetch("https://coral-7rhb.onrender.com/citas-ocupadas")
@@ -62,10 +62,7 @@ useEffect(() => {
 }, []);
 
 const isSlotOcupado = (fecha: string, hora: string) => {
-  return citasOcupadas.some(c => 
-    c.fecha === fecha && c.hora === hora &&
-    (selectedTherapistId === "" || c.terapeuta === currentTherapist?.name || c.terapeuta === "Cualquier especialista")
-  );
+  return citasOcupadas.some(c => c.fechaISO === fecha && c.hora === hora);
 };
 
   // Set the pre-selected service if provided
@@ -121,6 +118,7 @@ const handleConfirmReservation = async () => {
           servicio:  currentService?.title,
           terapeuta: currentTherapist ? currentTherapist.name : "Cualquier especialista",
           fecha:     selectedDateObject?.fullFormatted,
+          fechaISO: selectedDate,
           hora:      selectedTimeSlot,
         }),
       });
