@@ -17,9 +17,18 @@ import TherapistDossierModal from "./components/TherapistDossierModal";
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>("inicio");
-  const [isDark, setIsDark] = useState(() =>
+ const [isDark, setIsDark] = useState(() =>
   window.matchMedia("(prefers-color-scheme: dark)").matches
 );
+
+useEffect(() => {
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, [isDark]);
+
 const toggleDark = () => setIsDark(prev => !prev);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
@@ -51,7 +60,7 @@ const toggleDark = () => setIsDark(prev => !prev);
   };
 
   return (
-<div className={`${isDark ? "dark" : ""} min-h-screen bg-coral-bg flex flex-col justify-between selection:bg-coral-primary-fixed selection:text-coral-dark`}>
+<div className="min-h-screen bg-coral-bg flex flex-col justify-between selection:bg-coral-primary-fixed selection:text-coral-dark">
       {/* 1. Header Sticky Nav element */}
       <Header
   currentTab={currentTab}
