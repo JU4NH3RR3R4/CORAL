@@ -44,7 +44,7 @@ export default function ContactoSection() {
         {/* Telephone phone card */}
         <a
          
-         href="tel:+573239233344"
+         href="https://wa.me/573239233344" target="_blank" rel="noopener noreferrer"
           className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
         >
           <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
@@ -58,7 +58,7 @@ export default function ContactoSection() {
 
         {/* Mail contact card */}
         <a
-          href="mailto:clinicapsicologicacoral@gmail.com"
+          href="https://mail.google.com/mail/?view=cm&to=clinicapsicologicacoral@gmail.com" target="_blank" rel="noopener noreferrer"
           className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
         >
           <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
