@@ -51,7 +51,7 @@ export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: 
   });
 
   const [isSuccess, setIsSuccess] = useState(false);
-  const [datesList] = useState(generateDates);
+ const [datesList] = useState(() => generateDates());
 const [citasOcupadas, setCitasOcupadas] = useState<{fecha: string, hora: string, terapeuta: string}[]>([]);
 useEffect(() => {
   fetch("https://coral-7rhb.onrender.com/citas-ocupadas")
