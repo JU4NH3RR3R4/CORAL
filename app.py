@@ -227,7 +227,7 @@ def contacto():
     for dia in dias[:5]:
         slots_texto += f"\n  {dia}: {', '.join(horarios[:4])}"
 
-     cuerpo_paciente = f"""
+    cuerpo_paciente = f"""
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#f4f7ff;font-family:'Segoe UI',Arial,sans-serif;">
