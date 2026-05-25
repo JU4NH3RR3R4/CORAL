@@ -2,16 +2,17 @@ import { Globe, Phone, Mail, Share2, Instagram } from "lucide-react";
 
 interface FooterProps {
   setCurrentTab: (tab: string) => void;
+  isDark: boolean;
 }
 
-export default function Footer({ setCurrentTab }: FooterProps) {
+export default function Footer({ setCurrentTab, isDark }: FooterProps) {
   const handleNavClick = (tabId: string) => {
     setCurrentTab(tabId);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="w-full pt-16 pb-8 bg-[#273140] text-coral-container">
+   <footer className={`w-full pt-16 pb-8 ${isDark ? "bg-[#1a2535]" : "bg-[#273140]"} text-coral-container`}>
       <div className="max-w-7xl mx-auto px-6 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
         {/* Brand Information */}
         <div className="space-y-4">

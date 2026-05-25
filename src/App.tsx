@@ -115,7 +115,7 @@ const toggleDark = () => setIsDark(prev => !prev);
       </main>
 
       {/* 3. Global Footer banner */}
-      <Footer setCurrentTab={setCurrentTab} />
+     <Footer setCurrentTab={setCurrentTab} isDark={isDark} />
 
       {/* 4. OVERLAY DETAILED MODALS */}
       {/* Service Details popup summary */}
