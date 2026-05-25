@@ -215,7 +215,7 @@ export default function ContactoSection() {
             <MapPin className="w-16 h-16 text-coral-dark mb-4 drop-shadow-sm group-hover:bounce transition-all duration-500" />
             <h4 className="font-display font-bold text-coral-text text-xl">Nuestras Oficinas</h4>
             <p className="font-sans text-sm text-coral-text-variant max-w-sm mt-2 leading-relaxed">
-              Av. Bienestar 123, Piso 4, Colonia Juárez, Ciudad de México, CP 06600.
+              Barranquilla, Colombia.
             </p>
             <a
               href="https://maps.google.com"
