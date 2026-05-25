@@ -72,7 +72,7 @@ export default function ContactoSection() {
 
         {/* Website link card */}
         <a
-          href="https://www.coralpsicologia.com"
+          href="coral-ten-plum.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
@@ -82,7 +82,7 @@ export default function ContactoSection() {
           </div>
           <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Sitio web</span>
           <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
-            www.coralpsicologia.com
+            coral-ten-plum.vercel.app
           </span>
         </a>
       </section>
