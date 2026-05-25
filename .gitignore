@@ -6,3 +6,4 @@ coverage/
 *.log
 .env*
 !.env.example
+coral-ba902-firebase-adminsdk-fbsvc-e055069857.json

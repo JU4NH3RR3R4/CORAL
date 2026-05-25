@@ -3,3 +3,4 @@ flask-cors
 gunicorn
 google-auth
 google-api-python-client
+firebase-admin
