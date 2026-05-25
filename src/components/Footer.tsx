@@ -12,7 +12,7 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
   };
 
   return (
-   <footer className={`w-full pt-16 pb-8 ${isDark ? "bg-[#1a2535]" : "bg-[#273140]"} ${isDark ? "text-slate-300" : "text-coral-container"}`}>
+<footer className={`w-full pt-16 pb-8 ${isDark ? "bg-[#1a2535] text-slate-300" : "bg-[#273140] text-slate-300"}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
         {/* Brand Information */}
         <div className="space-y-4">
