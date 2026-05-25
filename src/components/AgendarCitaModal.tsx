@@ -62,11 +62,10 @@ useEffect(() => {
 
 const isSlotOcupado = (fecha: string, hora: string) => {
   if (selectedTherapistId === "") return false;
-  const fechaFormateada = datesList.find(d => d.isoString === fecha)?.fullFormatted || "";
-  return citasOcupadas.some(c => 
-    c.fecha === fechaFormateada && 
-    c.hora === hora && 
-    c.terapeuta === currentTherapist?.name
+ return citasOcupadas.some(c =>
+  c.fechaISO === fecha &&
+  c.hora === hora &&
+  c.terapeuta === currentTherapist?.name
   );
 };
   // Set the pre-selected service if provided

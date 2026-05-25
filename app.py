@@ -75,9 +75,14 @@ Notas:      {d.get('notas') or 'Sin notas'}
 
 @app.route("/citas-ocupadas", methods=["GET"])
 def citas_ocupadas():
-    citas = db.collection("citas").stream()
-    ocupadas = [{"fecha": c.to_dict().get("fecha", ""), "hora": c.to_dict()["hora"], "terapeuta": c.to_dict().get("terapeuta", "")} for c in citas]
+   citas = db.collection("citas").stream()
+    ocupadas = [
+        {
+            "fecha": c.to_dict().get("fecha", ""),
+            "fechaISO": c.to_dict().get("fechaISO", ""),
+            "hora": c.to_dict().get("hora", ""),
+            "terapeuta": c.to_dict().get("terapeuta", "")
+        }
+        for c in citas
+    ]
     return jsonify(ocupadas)
-
-if __name__ == "__main__":
-    app.run(debug=True)
