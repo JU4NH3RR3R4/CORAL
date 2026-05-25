@@ -58,7 +58,7 @@ def enviar_cita():
         "notas": d.get("notas") or "",
     })
     cuerpo = f"""
-Nueva cita agendada — Coral Clinica
+Nueva cita agendada - Coral Clinica
 
 Paciente:   {d.get('nombre')}
 Correo:     {d.get('email')}
@@ -73,8 +73,7 @@ Notas:      {d.get('notas') or 'Sin notas'}
     enviar_correo(CORREO_CLINICA, f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}", cuerpo)
     return jsonify({"ok": True})
 
-
-   @app.route("/citas-ocupadas", methods=["GET"])
+@app.route("/citas-ocupadas", methods=["GET"])
 def citas_ocupadas():
     citas = db.collection("citas").stream()
     ocupadas = [
@@ -87,3 +86,6 @@ def citas_ocupadas():
         for c in citas
     ]
     return jsonify(ocupadas)
+
+if __name__ == "__main__":
+    app.run(debug=True)
