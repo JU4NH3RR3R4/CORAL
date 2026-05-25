@@ -11,21 +11,31 @@ export default function ContactoSection() {
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      alert("Por favor, completa los campos requeridos.");
-      return;
-    }
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!formData.name || !formData.email || !formData.message) {
+    alert("Por favor, completa los campos requeridos.");
+    return;
+  }
 
-    setStatus("sending");
-    // Simulate real communication channel pipeline
-    setTimeout(() => {
+  setStatus("sending");
+  try {
+    const res = await fetch("https://coral-7rhb.onrender.com/contacto", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
+    const data = await res.json();
+    if (data.ok) {
       setStatus("success");
-      // Reset form on success
       setFormData({ name: "", email: "", subject: "informacion", message: "" });
-    }, 1500);
-  };
+    } else {
+      setStatus("error");
+    }
+  } catch {
+    setStatus("error");
+  }
+};
 
   return (
     <div className="space-y-16 py-12">
