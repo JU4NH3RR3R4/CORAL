@@ -296,7 +296,7 @@ def contacto():
 </body>
 </html>
 """
- cuerpo_clinica = f"""
+    cuerpo_clinica = f"""
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#f4f7ff;font-family:'Segoe UI',Arial,sans-serif;">
