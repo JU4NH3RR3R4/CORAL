@@ -22,14 +22,14 @@ export default function Footer({ setCurrentTab }: FooterProps) {
           <div className="flex gap-4">
            
             <a
-              href="tel:+525512345678"
+              href="tel:+573239233344"
               className="w-10 h-10 rounded-full border border-coral-container/20 flex items-center justify-center hover:bg-coral-light hover:text-white transition-all cursor-pointer"
               title="Llamar"
             >
               <Phone className="w-5 h-5 text-coral-highest" />
             </a>
             <a
-              href="mailto:hola@coralpsicologia.com"
+             href="mailto:clinicapsicologicacoral@gmail.com"
               className="w-10 h-10 rounded-full border border-coral-container/20 flex items-center justify-center hover:bg-coral-light hover:text-white transition-all cursor-pointer"
               title="Correo"
             >
