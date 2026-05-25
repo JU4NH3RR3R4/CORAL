@@ -43,48 +43,50 @@ export default function ContactoSection() {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Telephone phone card */}
         <a
-          href="tel:+525512345678"
-          className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
-        >
-          <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
-            <Phone className="w-5 h-5" />
-          </div>
-          <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Teléfono</span>
-          <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
-            +52 55 1234 5678
-          </span>
-        </a>
+         
+         {/* Teléfono contact card */}
+<a
+  href="tel:+573239233344"
+  className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
+>
+  <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
+    <Phone className="w-5 h-5" />
+  </div>
+  <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Teléfono</span>
+  <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
+    +57 323 9233344
+  </span>
+</a>
 
-        {/* Mail contact card */}
-        <a
-          href="mailto:contacto@coral.com"
-          className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
-        >
-          <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
-            <Mail className="w-5 h-5" />
-          </div>
-          <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Correo electrónico</span>
-          <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
-            contacto@coral.com
-          </span>
-        </a>
+{/* Mail contact card */}
+<a
+  href="mailto:clinicapsicologicacoral@gmail.com"
+  className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
+>
+  <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
+    <Mail className="w-5 h-5" />
+  </div>
+  <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Correo electrónico</span>
+  <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
+    clinicapsicologicacoral@gmail.com
+  </span>
+</a>
 
-        {/* Website link card */}
-        <a
-          href="https://www.coralpsicologia.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
-        >
-          <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
-            <Globe className="w-5 h-5" />
-          </div>
-          <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Sitio web</span>
-          <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
-            www.coralpsicologia.com
-          </span>
-        </a>
-      </section>
+{/* Website link card (opcional, puedes eliminarlo si no aplica) */}
+{/* <a
+  href="https://www.coralpsicologia.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-coral-lowest p-6 rounded-2xl border border-coral-outline-variant/20 hover:border-coral-light hover:shadow-sm text-center flex flex-col items-center gap-3 group transition-all duration-300"
+>
+  <div className="w-12 h-12 rounded-full bg-coral-primary-fixed flex items-center justify-center text-coral-dark group-hover:scale-110 transition-transform">
+    <Globe className="w-5 h-5" />
+  </div>
+  <span className="font-display text-xs font-bold text-coral-outline uppercase tracking-wider">Sitio web</span>
+  <span className="font-sans text-lg font-bold text-coral-text group-hover:text-coral-dark transition-colors">
+    —
+  </span>
+</a> */}
 
       {/* 3. Form & Beautiful Custom Map Frame */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 text-left">
