@@ -52,8 +52,7 @@ export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: 
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [datesList] = useState(generateDates);
-  const [citasOcupadas, setCitasOcupadas] = useState<{fechaISO: string, hora: string}[]>([]);
-
+  const [citasOcupadas, setCitasOcupadas] = useState<{fecha: string, hora: string}[]>([]);
 useEffect(() => {
   fetch("https://coral-7rhb.onrender.com/citas-ocupadas")
     .then(r => r.json())
@@ -62,7 +61,8 @@ useEffect(() => {
 }, []);
 
 const isSlotOcupado = (fecha: string, hora: string) => {
-  return citasOcupadas.some(c => c.fechaISO === fecha && c.hora === hora);
+  const fechaFormateada = datesList.find(d => d.isoString === fecha)?.fullFormatted || "";
+  return citasOcupadas.some(c => c.fecha === fechaFormateada && c.hora === hora);
 };
 
   // Set the pre-selected service if provided
