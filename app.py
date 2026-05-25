@@ -57,7 +57,7 @@ def enviar_cita():
         "hora": d.get("hora"),
         "notas": d.get("notas") or "",
     })
-cuerpo_paciente = f"""
+    cuerpo_paciente = f"""
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#f4f7ff;font-family:'Segoe UI',Arial,sans-serif;">
@@ -122,7 +122,7 @@ cuerpo_paciente = f"""
 </body>
 </html>
 """
-
+    
     cuerpo_clinica = f"""
 <!DOCTYPE html>
 <html>
