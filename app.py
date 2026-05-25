@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import base64
+import json
 from email.mime.text import MIMEText
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -11,15 +12,12 @@ from firebase_admin import credentials, firestore
 app = Flask(__name__)
 CORS(app)
 
-# Gmail OAuth
 GMAIL_USER = os.environ.get("GMAIL_USER")
 CLIENT_ID = os.environ.get("GMAIL_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("GMAIL_CLIENT_SECRET")
 REFRESH_TOKEN = os.environ.get("GMAIL_REFRESH_TOKEN")
 CORREO_CLINICA = os.environ.get("CORREO_CLINICA")
 
-# Firebase
-import json
 firebase_creds = json.loads(os.environ.get("FIREBASE_CREDENTIALS"))
 cred = credentials.Certificate(firebase_creds)
 firebase_admin.initialize_app(cred)
@@ -48,8 +46,6 @@ def enviar_correo(destinatario, asunto, cuerpo):
 @app.route("/enviar-cita", methods=["POST"])
 def enviar_cita():
     d = request.get_json()
-
-    # Guardar en Firestore
     db.collection("citas").add({
         "nombre": d.get("nombre"),
         "email": d.get("email"),
@@ -57,33 +53,31 @@ def enviar_cita():
         "servicio": d.get("servicio"),
         "terapeuta": d.get("terapeuta"),
         "fecha": d.get("fecha"),
+        "fechaISO": d.get("fechaISO"),
         "hora": d.get("hora"),
         "notas": d.get("notas") or "",
     })
-
     cuerpo = f"""
-Nueva cita agendada — Coral Clínica
+Nueva cita agendada — Coral Clinica
 
 Paciente:   {d.get('nombre')}
 Correo:     {d.get('email')}
-Teléfono:   {d.get('telefono')}
+Telefono:   {d.get('telefono')}
 Servicio:   {d.get('servicio')}
 Terapeuta:  {d.get('terapeuta')}
 Fecha:      {d.get('fecha')}
 Hora:       {d.get('hora')}
 Notas:      {d.get('notas') or 'Sin notas'}
     """
-
-    enviar_correo(d.get('email'), f"Confirmación de cita - {d.get('fecha')}", cuerpo)
+    enviar_correo(d.get('email'), f"Confirmacion de cita - {d.get('fecha')}", cuerpo)
     enviar_correo(CORREO_CLINICA, f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}", cuerpo)
-
     return jsonify({"ok": True})
 
-   @app.route("/citas-ocupadas", methods=["GET"])
+@app.route("/citas-ocupadas", methods=["GET"])
 def citas_ocupadas():
     citas = db.collection("citas").stream()
-    ocupadas = [{"fecha": c.to_dict().get("fecha",""), "hora": c.to_dict()["hora"]} for c in citas]
+    ocupadas = [{"fecha": c.to_dict().get("fecha", ""), "hora": c.to_dict()["hora"]} for c in citas]
     return jsonify(ocupadas)
+
 if __name__ == "__main__":
     app.run(debug=True)
-    
