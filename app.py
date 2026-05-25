@@ -73,9 +73,10 @@ Notas:      {d.get('notas') or 'Sin notas'}
     enviar_correo(CORREO_CLINICA, f"Nueva cita - {d.get('nombre')} - {d.get('fecha')}", cuerpo)
     return jsonify({"ok": True})
 
-@app.route("/citas-ocupadas", methods=["GET"])
+
+   @app.route("/citas-ocupadas", methods=["GET"])
 def citas_ocupadas():
-   citas = db.collection("citas").stream()
+    citas = db.collection("citas").stream()
     ocupadas = [
         {
             "fecha": c.to_dict().get("fecha", ""),
