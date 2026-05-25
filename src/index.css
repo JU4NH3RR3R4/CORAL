@@ -40,3 +40,20 @@
   transform: scale(1);
   transition: opacity 500ms ease, transform 500ms ease;
 }
+/* Dark mode */
+@layer base {
+  .dark body {
+    --color-coral-bg: #0f1a24;
+    --color-coral-low: #1a2535;
+    --color-coral-lowest: #162030;
+    --color-coral-container: #1e2e42;
+    --color-coral-highest: #243448;
+    --color-coral-text: #e8edf5;
+    --color-coral-text-variant: #b0bcc8;
+    --color-coral-outline: #4a6070;
+    --color-coral-outline-variant: #2a3d52;
+    --color-coral-dark: #e8735a;
+    --color-coral-light: #f0957e;
+    --color-coral-primary-fixed: #3a1e18;
+  }
+}
