@@ -12,12 +12,12 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
   };
 
   return (
-   <footer className={`w-full pt-16 pb-8 ${isDark ? "bg-[#1a2535]" : "bg-[#273140]"} text-coral-container`}>
+   <footer className={`w-full pt-16 pb-8 ${isDark ? "bg-[#1a2535]" : "bg-[#273140]"} ${isDark ? "text-slate-300" : "text-coral-container"}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-16 grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
         {/* Brand Information */}
         <div className="space-y-4">
           <div className="font-display text-2xl font-bold text-coral-lowest">Coral</div>
-          <p className="text-sm text-coral-highest/75 font-sans leading-relaxed">
+          <p className={`text-sm font-sans leading-relaxed ${isDark ? "text-slate-400" : "text-coral-highest/75"}`}>
             Dedicados a tu salud mental con un enfoque humanista, empático y profundamente cálido. Tu seguridad emocional es nuestro norte.
           </p>
           <div className="flex gap-4">
@@ -46,7 +46,7 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
             <li>
               <button
                 onClick={() => handleNavClick("inicio")}
-                className="text-coral-highest/80 hover:text-coral-lowest transition-colors cursor-pointer text-left focus:outline-none"
+                className={`${isDark ? "text-slate-400 hover:text-white" : "text-coral-highest/80 hover:text-coral-lowest"} transition-colors cursor-pointer text-left focus:outline-none`}
               >
                 Inicio
               </button>
@@ -54,7 +54,7 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
             <li>
               <button
                 onClick={() => handleNavClick("servicios")}
-                className="text-coral-highest/80 hover:text-coral-lowest transition-colors cursor-pointer text-left focus:outline-none"
+                className={`${isDark ? "text-slate-400 hover:text-white" : "text-coral-highest/80 hover:text-coral-lowest"} transition-colors cursor-pointer text-left focus:outline-none`}
               >
                 Servicios
               </button>
@@ -62,7 +62,7 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
             <li>
               <button
                 onClick={() => handleNavClick("nosotros")}
-                className="text-coral-highest/80 hover:text-coral-lowest transition-colors cursor-pointer text-left focus:outline-none"
+                className={`${isDark ? "text-slate-400 hover:text-white" : "text-coral-highest/80 hover:text-coral-lowest"} transition-colors cursor-pointer text-left focus:outline-none`}
               >
                 Nosotros
               </button>
@@ -70,18 +70,16 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
             <li>
               <button
                 onClick={() => handleNavClick("contacto")}
-                className="text-coral-highest/80 hover:text-coral-lowest transition-colors cursor-pointer text-left focus:outline-none"
+                className={`${isDark ? "text-slate-400 hover:text-white" : "text-coral-highest/80 hover:text-coral-lowest"} transition-colors cursor-pointer text-left focus:outline-none`}
               >
                 Contacto
               </button>
             </li>
-          </ul>
-        </div>
 
         {/* Custom Core Services Links */}
         <div className="space-y-4">
           <h6 className="font-display text-xs font-bold text-coral-light uppercase tracking-wider">Servicios principales</h6>
-          <ul className="space-y-2.5 font-sans text-sm text-coral-highest/80">
+          <ul className={`space-y-2.5 font-sans text-sm ${isDark ? "text-slate-400" : "text-coral-highest/80"}`}>
             <li>
               <button
                 onClick={() => handleNavClick("servicios")}
@@ -144,7 +142,7 @@ export default function Footer({ setCurrentTab, isDark }: FooterProps) {
       </div>
 
       {/* Copywrite Section bottom lines */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 mt-12 pt-8 border-t border-coral-container/10 text-center text-xs text-coral-highest/60 font-sans">
+      <div className={`max-w-7xl mx-auto px-6 md:px-16 mt-12 pt-8 border-t ${isDark ? "border-slate-700 text-slate-500" : "border-coral-container/10 text-coral-highest/60"} text-center text-xs font-sans`}></div>
         <p>© {new Date().getFullYear()} Coral Psicología. Todos los derechos reservados.</p>
       </div>
     </footer>
