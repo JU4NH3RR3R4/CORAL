@@ -218,7 +218,7 @@ const handleConfirmReservation = async () => {
 
                 <div className="pt-4 flex flex-col sm:flex-row justify-center gap-3">
                   <a
-                    href="https://wa.me/525512345678"
+                    href="https://wa.me/+573239233344"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-full transition-colors flex items-center justify-center gap-2 cursor-pointer"
