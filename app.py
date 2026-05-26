@@ -382,6 +382,88 @@ def admin_marcar_atendida(cita_id):
         return jsonify({"error": "No autorizado"}), 401
     db.collection("citas").document(cita_id).update({"atendida": True})
     return jsonify({"ok": True})
-
+@app.route("/recordatorios", methods=["GET"])
+def enviar_recordatorios():
+    from datetime import datetime, timedelta
+    
+    manana = datetime.now() + timedelta(days=1)
+    manana_iso = manana.strftime("%Y-%m-%d")
+    
+    citas = db.collection("citas").stream()
+    enviados = 0
+    
+    for c in citas:
+        data = c.to_dict()
+        if data.get("recordatorio_enviado"):
+            continue
+        if data.get("fechaISO") != manana_iso:
+            continue
+        
+        nombre = data.get("nombre")
+        email = data.get("email")
+        fecha = data.get("fecha")
+        hora = data.get("hora")
+        terapeuta = data.get("terapeuta")
+        servicio = data.get("servicio")
+        
+        cuerpo = f"""
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f4f7ff;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7ff;padding:40px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#a13e2a,#e8735a);padding:40px 40px 32px;text-align:center;">
+          <h1 style="color:#ffffff;font-size:28px;margin:0;">Coral Psicología</h1>
+          <p style="color:#ffdad3;font-size:14px;margin:8px 0 0;">Recordatorio de Cita</p>
+        </td></tr>
+        <tr><td style="padding:40px 40px 24px;">
+          <h2 style="color:#121c2a;font-size:22px;margin:0 0 12px;">¡Hola, {nombre}! 🌿</h2>
+          <p style="color:#56423e;font-size:15px;line-height:1.7;margin:0;">
+            Te recordamos que <strong>mañana tienes una cita</strong> con nosotros.
+          </p>
+        </td></tr>
+        <tr><td style="padding:0 40px 32px;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9ff;border-radius:12px;overflow:hidden;">
+            <tr><td style="padding:20px 24px;border-bottom:1px solid #e6eeff;">
+              <p style="margin:0;font-size:12px;color:#8a726c;text-transform:uppercase;">Servicio</p>
+              <p style="margin:6px 0 0;font-size:16px;font-weight:600;color:#121c2a;">{servicio}</p>
+            </td></tr>
+            <tr><td style="padding:20px 24px;border-bottom:1px solid #e6eeff;">
+              <p style="margin:0;font-size:12px;color:#8a726c;text-transform:uppercase;">Terapeuta</p>
+              <p style="margin:6px 0 0;font-size:16px;font-weight:600;color:#121c2a;">{terapeuta}</p>
+            </td></tr>
+            <tr><td style="padding:20px 24px;border-bottom:1px solid #e6eeff;">
+              <p style="margin:0;font-size:12px;color:#8a726c;text-transform:uppercase;">Fecha</p>
+              <p style="margin:6px 0 0;font-size:16px;font-weight:600;color:#121c2a;">{fecha}</p>
+            </td></tr>
+            <tr><td style="padding:20px 24px;">
+              <p style="margin:0;font-size:12px;color:#8a726c;text-transform:uppercase;">Hora</p>
+              <p style="margin:6px 0 0;font-size:16px;font-weight:600;color:#121c2a;">{hora}</p>
+            </td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:0 40px 32px;">
+          <div style="background:linear-gradient(135deg,#ffdad3,#f9f9ff);border-radius:12px;padding:24px;border-left:4px solid #e8735a;">
+            <p style="margin:0;font-size:15px;color:#56423e;line-height:1.7;font-style:italic;">
+              "Cada sesión es un paso hacia una versión más plena de ti mismo. ¡Nos vemos mañana!" 💙
+            </p>
+          </div>
+        </td></tr>
+        <tr><td style="background:#f9f9ff;padding:24px 40px;text-align:center;border-top:1px solid #e6eeff;">
+          <p style="margin:0;font-size:13px;color:#8a726c;">Coral Psicología · Barranquilla, Colombia</p>
+          <p style="margin:6px 0 0;font-size:13px;color:#8a726c;">clinicapsicologicacoral@gmail.com · +57 323 9233344</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
+"""
+        enviar_correo(email, f"Recordatorio: Tu cita es mañana — {fecha}", cuerpo)
+        db.collection("citas").document(c.id).update({"recordatorio_enviado": True})
+        enviados += 1
+    
+    return jsonify({"ok": True, "enviados": enviados})
 if __name__ == "__main__":
     app.run(debug=True)
