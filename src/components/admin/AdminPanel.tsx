@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LogOut, Trash2, CheckCircle, Filter } from "lucide-react";
+import { LogOut, Trash2, CheckCircle, Filter, RefreshCw } from "lucide-react";
 
 interface Cita {
   id: string;
@@ -12,6 +12,8 @@ interface Cita {
   hora: string;
   notas: string;
   atendida?: boolean;
+  cancelada?: boolean;
+  reagendar?: boolean;
 }
 
 interface AdminPanelProps {
@@ -23,6 +25,7 @@ export default function AdminPanel({ onLogout }: AdminPanelProps) {
   const [loading, setLoading] = useState(true);
   const [filtroTerapeuta, setFiltroTerapeuta] = useState("");
   const [filtroFecha, setFiltroFecha] = useState("");
+  const [filtroEstado, setFiltroEstado] = useState("");
 
   const fetchCitas = async () => {
     setLoading(true);
@@ -36,7 +39,7 @@ export default function AdminPanel({ onLogout }: AdminPanelProps) {
 
   useEffect(() => { fetchCitas(); }, []);
 
-  const cancelarCita = async (id: string) => {
+  const eliminarCita = async (id: string) => {
     if (!confirm("¿Eliminar esta cita?")) return;
     await fetch(`https://coral-7rhb.onrender.com/admin/citas/${id}`, {
       method: "DELETE",
@@ -56,14 +59,31 @@ export default function AdminPanel({ onLogout }: AdminPanelProps) {
   const citasFiltradas = citas.filter(c => {
     const matchTerapeuta = filtroTerapeuta ? c.terapeuta === filtroTerapeuta : true;
     const matchFecha = filtroFecha ? c.fecha.includes(filtroFecha) : true;
-    return matchTerapeuta && matchFecha;
+    const matchEstado = filtroEstado === "cancelada" ? c.cancelada :
+      filtroEstado === "reagendar" ? c.reagendar :
+      filtroEstado === "atendida" ? c.atendida :
+      filtroEstado === "pendiente" ? !c.atendida && !c.cancelada && !c.reagendar : true;
+    return matchTerapeuta && matchFecha && matchEstado;
   });
 
   const terapeutas = [...new Set(citas.map(c => c.terapeuta))];
 
+  const getBorderClass = (cita: Cita) => {
+    if (cita.cancelada) return "border-red-200 bg-red-50/30";
+    if (cita.reagendar) return "border-yellow-200 bg-yellow-50/30";
+    if (cita.atendida) return "border-green-200 opacity-70";
+    return "border-coral-outline-variant/20";
+  };
+
+  const getEstadoBadge = (cita: Cita) => {
+    if (cita.cancelada) return <span className="text-xs font-medium text-red-600 bg-red-50 px-3 py-1 rounded-full">Cancelada</span>;
+    if (cita.reagendar) return <span className="text-xs font-medium text-yellow-700 bg-yellow-50 px-3 py-1 rounded-full">Solicita reagendar</span>;
+    if (cita.atendida) return <span className="text-xs font-medium text-green-700 bg-green-50 px-3 py-1 rounded-full">Atendida</span>;
+    return <span className="text-xs font-medium text-coral-dark bg-coral-primary-fixed px-3 py-1 rounded-full">Pendiente</span>;
+  };
+
   return (
     <div className="min-h-screen bg-coral-bg">
-      {/* Header */}
       <div className="bg-coral-lowest border-b border-coral-outline-variant/20 px-6 py-4 flex justify-between items-center">
         <div>
           <h1 className="font-display text-xl font-bold text-coral-text">Panel de Administración</h1>
@@ -76,52 +96,50 @@ export default function AdminPanel({ onLogout }: AdminPanelProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <div className="bg-coral-lowest rounded-2xl p-5 border border-coral-outline-variant/20">
-            <p className="text-xs text-coral-text-variant uppercase tracking-wider">Total citas</p>
+            <p className="text-xs text-coral-text-variant uppercase tracking-wider">Total</p>
             <p className="text-3xl font-bold text-coral-text mt-1">{citas.length}</p>
           </div>
           <div className="bg-coral-lowest rounded-2xl p-5 border border-coral-outline-variant/20">
             <p className="text-xs text-coral-text-variant uppercase tracking-wider">Pendientes</p>
-            <p className="text-3xl font-bold text-coral-dark mt-1">{citas.filter(c => !c.atendida).length}</p>
+            <p className="text-3xl font-bold text-coral-dark mt-1">{citas.filter(c => !c.atendida && !c.cancelada && !c.reagendar).length}</p>
           </div>
           <div className="bg-coral-lowest rounded-2xl p-5 border border-coral-outline-variant/20">
             <p className="text-xs text-coral-text-variant uppercase tracking-wider">Atendidas</p>
             <p className="text-3xl font-bold text-green-600 mt-1">{citas.filter(c => c.atendida).length}</p>
           </div>
-          <div className="bg-coral-lowest rounded-2xl p-5 border border-coral-outline-variant/20">
-            <p className="text-xs text-coral-text-variant uppercase tracking-wider">Terapeutas</p>
-            <p className="text-3xl font-bold text-coral-secondary mt-1">{terapeutas.length}</p>
+          <div className="bg-coral-lowest rounded-2xl p-5 border border-red-200">
+            <p className="text-xs text-coral-text-variant uppercase tracking-wider">Canceladas</p>
+            <p className="text-3xl font-bold text-red-500 mt-1">{citas.filter(c => c.cancelada).length}</p>
+          </div>
+          <div className="bg-coral-lowest rounded-2xl p-5 border border-yellow-200">
+            <p className="text-xs text-coral-text-variant uppercase tracking-wider">Reagendar</p>
+            <p className="text-3xl font-bold text-yellow-600 mt-1">{citas.filter(c => c.reagendar).length}</p>
           </div>
         </div>
 
-        {/* Filtros */}
         <div className="flex flex-wrap gap-3 items-center">
           <Filter className="w-4 h-4 text-coral-text-variant" />
-          <select
-            value={filtroTerapeuta}
-            onChange={e => setFiltroTerapeuta(e.target.value)}
-            className="bg-coral-lowest border border-coral-outline-variant/30 rounded-full px-4 py-2 text-sm outline-none"
-          >
+          <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)} className="bg-coral-lowest border border-coral-outline-variant/30 rounded-full px-4 py-2 text-sm outline-none">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="atendida">Atendidas</option>
+            <option value="cancelada">Canceladas</option>
+            <option value="reagendar">Solicitan reagendar</option>
+          </select>
+          <select value={filtroTerapeuta} onChange={e => setFiltroTerapeuta(e.target.value)} className="bg-coral-lowest border border-coral-outline-variant/30 rounded-full px-4 py-2 text-sm outline-none">
             <option value="">Todos los terapeutas</option>
             {terapeutas.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
-          <input
-            type="text"
-            placeholder="Filtrar por fecha (ej: May)"
-            value={filtroFecha}
-            onChange={e => setFiltroFecha(e.target.value)}
-            className="bg-coral-lowest border border-coral-outline-variant/30 rounded-full px-4 py-2 text-sm outline-none"
-          />
-          {(filtroTerapeuta || filtroFecha) && (
-            <button onClick={() => { setFiltroTerapeuta(""); setFiltroFecha(""); }} className="text-sm text-coral-dark hover:underline cursor-pointer">
+          <input type="text" placeholder="Filtrar por fecha (ej: May)" value={filtroFecha} onChange={e => setFiltroFecha(e.target.value)} className="bg-coral-lowest border border-coral-outline-variant/30 rounded-full px-4 py-2 text-sm outline-none" />
+          {(filtroTerapeuta || filtroFecha || filtroEstado) && (
+            <button onClick={() => { setFiltroTerapeuta(""); setFiltroFecha(""); setFiltroEstado(""); }} className="text-sm text-coral-dark hover:underline cursor-pointer">
               Limpiar filtros
             </button>
           )}
         </div>
 
-        {/* Tabla */}
         {loading ? (
           <div className="text-center py-20 text-coral-text-variant">Cargando citas...</div>
         ) : citasFiltradas.length === 0 ? (
@@ -129,7 +147,7 @@ export default function AdminPanel({ onLogout }: AdminPanelProps) {
         ) : (
           <div className="space-y-3">
             {citasFiltradas.map(cita => (
-              <div key={cita.id} className={`bg-coral-lowest rounded-2xl border p-5 flex flex-col md:flex-row md:items-center gap-4 ${cita.atendida ? "border-green-200 opacity-70" : "border-coral-outline-variant/20"}`}>
+              <div key={cita.id} className={`bg-coral-lowest rounded-2xl border p-5 flex flex-col md:flex-row md:items-center gap-4 ${getBorderClass(cita)}`}>
                 <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div>
                     <p className="text-xs text-coral-text-variant uppercase tracking-wider">Paciente</p>
@@ -147,19 +165,19 @@ export default function AdminPanel({ onLogout }: AdminPanelProps) {
                     <p className="text-xs text-coral-text-variant">{cita.hora}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-coral-text-variant uppercase tracking-wider">Teléfono</p>
-                    <p className="font-semibold text-coral-text text-sm mt-0.5">{cita.telefono}</p>
-                    {cita.notas && <p className="text-xs text-coral-text-variant">{cita.notas}</p>}
+                    <p className="text-xs text-coral-text-variant uppercase tracking-wider">Estado</p>
+                    <div className="mt-0.5">{getEstadoBadge(cita)}</div>
+                    {cita.notas && <p className="text-xs text-coral-text-variant mt-1">{cita.notas}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2 shrink-0">
-                  {!cita.atendida && (
+                  {!cita.atendida && !cita.cancelada && (
                     <button onClick={() => marcarAtendida(cita.id)} className="flex items-center gap-1.5 bg-green-50 hover:bg-green-100 text-green-700 text-xs font-medium px-4 py-2 rounded-full transition-all cursor-pointer">
                       <CheckCircle className="w-4 h-4" />
                       Atendida
                     </button>
                   )}
-                  <button onClick={() => cancelarCita(cita.id)} className="flex items-center gap-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium px-4 py-2 rounded-full transition-all cursor-pointer">
+                  <button onClick={() => eliminarCita(cita.id)} className="flex items-center gap-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium px-4 py-2 rounded-full transition-all cursor-pointer">
                     <Trash2 className="w-4 h-4" />
                     Eliminar
                   </button>
