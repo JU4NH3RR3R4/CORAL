@@ -46,7 +46,7 @@ def enviar_correo(destinatario, asunto, cuerpo_html):
 @app.route("/enviar-cita", methods=["POST"])
 def enviar_cita():
     d = request.get_json()
-    db.collection("citas").add({
+    cita_ref = db.collection("citas").add({
         "nombre": d.get("nombre"),
         "email": d.get("email"),
         "telefono": d.get("telefono"),
@@ -57,6 +57,7 @@ def enviar_cita():
         "hora": d.get("hora"),
         "notas": d.get("notas") or "",
     })
+    cita_id = cita_ref[1].id
     cuerpo_paciente = f"""
 <!DOCTYPE html>
 <html>
@@ -100,7 +101,23 @@ def enviar_cita():
             </td></tr>
           </table>
         </td></tr>
-
+<!-- Botones acción -->
+        <tr><td style="padding:0 40px 32px;text-align:center;">
+          <table cellpadding="0" cellspacing="0" style="margin:0 auto;">
+            <tr>
+              <td style="padding-right:12px;">
+                <a href="https://coral-7rhb.onrender.com/cita/{cita_id}/reagendar" style="display:inline-block;background:#f9f9ff;border:2px solid #e8735a;color:#a13e2a;font-size:14px;font-weight:600;padding:12px 24px;border-radius:50px;text-decoration:none;">
+                  Reagendar
+                </a>
+              </td>
+              <td>
+                <a href="https://coral-7rhb.onrender.com/cita/{cita_id}/cancelar" style="display:inline-block;background:#fff5f5;border:2px solid #fca5a5;color:#dc2626;font-size:14px;font-weight:600;padding:12px 24px;border-radius:50px;text-decoration:none;">
+                  Cancelar cita
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
         <!-- Motivational -->
         <tr><td style="padding:0 40px 32px;">
           <div style="background:linear-gradient(135deg,#ffdad3,#f9f9ff);border-radius:12px;padding:24px;border-left:4px solid #e8735a;">
@@ -465,5 +482,42 @@ def enviar_recordatorios():
         enviados += 1
     
     return jsonify({"ok": True, "enviados": enviados})
+@app.route("/cita/<cita_id>/cancelar", methods=["GET"])
+def cancelar_cita_paciente(cita_id):
+    db.collection("citas").document(cita_id).update({"cancelada": True})
+    return """
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f4f7ff;font-family:'Segoe UI',Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <div style="background:#ffffff;border-radius:16px;padding:48px;max-width:480px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="font-size:48px;margin-bottom:16px;">😔</div>
+    <h1 style="color:#121c2a;font-size:24px;margin:0 0 12px;">Cita cancelada</h1>
+    <p style="color:#56423e;font-size:15px;line-height:1.7;margin:0 0 24px;">Tu cita ha sido cancelada exitosamente. Si deseas reagendar, puedes hacerlo en nuestro sitio web.</p>
+    <a href="https://coral-ten-plum.vercel.app" style="display:inline-block;background:linear-gradient(135deg,#a13e2a,#e8735a);color:#ffffff;font-size:15px;font-weight:600;padding:14px 32px;border-radius:50px;text-decoration:none;">
+      Reagendar cita
+    </a>
+  </div>
+</body>
+</html>
+"""
+
+@app.route("/cita/<cita_id>/reagendar", methods=["GET"])
+def reagendar_cita_paciente(cita_id):
+    db.collection("citas").document(cita_id).update({"reagendar": True})
+    return """
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f4f7ff;font-family:'Segoe UI',Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <div style="background:#ffffff;border-radius:16px;padding:48px;max-width:480px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="font-size:48px;margin-bottom:16px;">📅</div>
+    <h1 style="color:#121c2a;font-size:24px;margin:0 0 12px;">Reagendar cita</h1>
+    <p style="color:#56423e;font-size:15px;line-height:1.7;margin:0 0 24px;">Hemos recibido tu solicitud. Agenda tu nueva cita directamente en nuestro sitio web.</p>
+    <a href="https://coral-ten-plum.vercel.app" style="display:inline-block;background:linear-gradient(135deg,#a13e2a,#e8735a);color:#ffffff;font-size:15px;font-weight:600;padding:14px 32px;border-radius:50px;text-decoration:none;">
+      Agendar nueva cita
+    </a>
+  </div>
+</body>
+</html>
+"""
 if __name__ == "__main__":
     app.run(debug=True)
