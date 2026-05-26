@@ -347,6 +347,41 @@ def contacto():
     enviar_correo(CORREO_CLINICA, f"Nuevo contacto — {nombre}", cuerpo_clinica)
 
     return jsonify({"ok": True})
+ADMIN_USER = os.environ.get("ADMIN_USER")
+ADMIN_PASS = os.environ.get("ADMIN_PASS")
+
+@app.route("/admin/login", methods=["POST"])
+def admin_login():
+    d = request.get_json()
+    if d.get("user") == ADMIN_USER and d.get("pass") == ADMIN_PASS:
+        return jsonify({"ok": True})
+    return jsonify({"ok": False}), 401
+
+@app.route("/admin/citas", methods=["GET"])
+def admin_citas():
+    if request.headers.get("x-admin-auth") != "true":
+        return jsonify({"error": "No autorizado"}), 401
+    citas = db.collection("citas").stream()
+    result = []
+    for c in citas:
+        data = c.to_dict()
+        data["id"] = c.id
+        result.append(data)
+    return jsonify(result)
+
+@app.route("/admin/citas/<cita_id>", methods=["DELETE"])
+def admin_eliminar_cita(cita_id):
+    if request.headers.get("x-admin-auth") != "true":
+        return jsonify({"error": "No autorizado"}), 401
+    db.collection("citas").document(cita_id).delete()
+    return jsonify({"ok": True})
+
+@app.route("/admin/citas/<cita_id>/atendida", methods=["PATCH"])
+def admin_marcar_atendida(cita_id):
+    if request.headers.get("x-admin-auth") != "true":
+        return jsonify({"error": "No autorizado"}), 401
+    db.collection("citas").document(cita_id).update({"atendida": True})
+    return jsonify({"ok": True})
 
 if __name__ == "__main__":
     app.run(debug=True)
