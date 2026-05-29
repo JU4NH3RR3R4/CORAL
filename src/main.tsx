@@ -4,14 +4,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App.tsx';
 import AdminPage from './components/admin/AdminPage.tsx';
 import './index.css';
-
+import ConfirmacionPage from './pages/ConfirmacionPage.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/confirmacion" element={<ConfirmacionPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
 );
+

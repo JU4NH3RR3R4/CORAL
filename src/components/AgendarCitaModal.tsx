@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, ArrowLeft, ArrowRight, Check, Calendar, UserCheck, Clock, Contact, FileText, CheckCircle } from "lucide-react";
 import { SERVICES_DATA, THERAPISTS_DATA, Service, Therapist } from "../types";
 import { motion, AnimatePresence } from "motion/react";
@@ -37,6 +38,7 @@ const generateDates = () => {
 const TIME_SLOTS = ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "05:00 PM", "06:30 PM"];
 
 export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: AgendarCitaModalProps) {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [selectedServiceId, setSelectedServiceId] = useState("");
   const [selectedTherapistId, setSelectedTherapistId] = useState(""); // empty string means "cualquier especialista"
@@ -52,7 +54,7 @@ export default function AgendarCitaModal({ isOpen, onClose, initialServiceId }: 
 
   const [isSuccess, setIsSuccess] = useState(false);
  const [datesList] = useState(() => generateDates());
-const [citasOcupadas, setCitasOcupadas] = useState<{fecha: string, hora: string, terapeuta: string}[]>([]);
+const [citasOcupadas, setCitasOcupadas] = useState<{fecha: string, fechaISO: string, hora: string, terapeuta: string}[]>([]);
 useEffect(() => {
   fetch("https://coral-7rhb.onrender.com/citas-ocupadas")
     .then(r => r.json())
@@ -128,7 +130,13 @@ const handleConfirmReservation = async () => {
     } catch (error) {
       console.error("Error al enviar correo:", error);
     }
-    setIsSuccess(true);
+    navigate("/confirmacion", { state: { cita: {
+  nombre: clientDetails.name,
+  servicio: currentService?.title,
+  terapeuta: currentTherapist ? currentTherapist.name : "Cualquier especialista",
+  fecha: selectedDateObject?.fullFormatted,
+  hora: selectedTimeSlot,
+}}});
   };
 
   return (
